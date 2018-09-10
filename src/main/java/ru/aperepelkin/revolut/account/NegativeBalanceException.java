@@ -1,4 +1,6 @@
 package ru.aperepelkin.revolut.account;
 
-public class NegativeBalanceException extends Exception {
+import javax.ws.rs.BadRequestException;
+
+public class NegativeBalanceException extends BadRequestException {
 }

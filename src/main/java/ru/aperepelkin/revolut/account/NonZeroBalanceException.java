@@ -1,4 +1,6 @@
 package ru.aperepelkin.revolut.account;
 
-public class NonZeroBalanceException extends Exception {
+import javax.ws.rs.BadRequestException;
+
+public class NonZeroBalanceException extends BadRequestException {
 }

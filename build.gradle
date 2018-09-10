@@ -89,3 +89,11 @@ task generate(dependsOn: 'flywayMigrate') {
         GenerationTool.generate(writer.toString())
     }
 }
+
+assembleDist {
+    dependsOn test
+}
+
+test {
+    useTestNG()
+}

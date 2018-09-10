@@ -4,12 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
-import ru.aperepelkin.revolut.account.bootstrap.Bootstrap;
-import ru.aperepelkin.revolut.account.bootstrap.DatabaseComponent;
 import ru.aperepelkin.revolut.account.jooq.tables.records.AccountsRecord;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.NotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -34,7 +33,8 @@ public class AccountService {
 
     public AccountModel get(Long id) {
         return dsl.selectFrom(ACCOUNTS).where(ACCOUNTS.ID.eq(id))
-                .fetchOne()
+                .fetchOptional()
+                .orElseThrow(NotFoundException::new)
                 .map(record -> toModel((AccountsRecord) record));
     }
 
@@ -68,9 +68,10 @@ public class AccountService {
         });
     }
 
-    public void close(Long id) throws NonZeroBalanceException {
+    public void close(Long id) {
         AccountsRecord record = dsl.selectFrom(ACCOUNTS).where(ACCOUNTS.ID.eq(id))
-                .fetchOne();
+                .fetchOptional()
+                .orElseThrow(NotFoundException::new);
         if(record.getBalance().compareTo(BigDecimal.ZERO) > 0)
             throw new NonZeroBalanceException();
         record.delete();
@@ -113,6 +114,7 @@ public class AccountService {
         return dsl.selectFrom(ACCOUNTS)
                 .where(ACCOUNTS.ID.eq(id))
                 .forUpdate()
-                .fetchOne();
+                .fetchOptional()
+                .orElseThrow(NotFoundException::new);
     }
 }

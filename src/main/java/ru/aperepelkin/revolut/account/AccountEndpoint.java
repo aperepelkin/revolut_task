@@ -55,11 +55,7 @@ public class AccountEndpoint {
     @DELETE
     @Path("{id}")
     public void close(@PathParam("id") Long id) {
-        try {
-            service.close(id);
-        } catch (NonZeroBalanceException e) {
-            throw new BadRequestException(e);
-        }
+        service.close(id);
     }
 
     @PUT
