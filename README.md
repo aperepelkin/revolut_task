@@ -15,7 +15,7 @@ Running service
 
 Unzip distribution archive and run bin/account-service or bin/account-service.bat (for Windows).
 By default, service will run on 8080 port
-
+You could build distribution or download it from https://github.com/aperepelkin/revolut_task/releases/latest
 
 API
 ---
